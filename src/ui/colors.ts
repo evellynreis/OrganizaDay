@@ -24,6 +24,7 @@ export const neutralLightColor = "#2C322F"
 export const backgroundLightColor = "#F2F8F5";
 export const alternativeColor = "#FFFFFF";
 
+export const successColor = "#1B8A3E";
 export const errorColor = "#DA1414";
 export const errorLightColor = withOpacity(errorColor, 0.2);
 export const errorMiddleColor = withOpacity(errorColor, 0.5);

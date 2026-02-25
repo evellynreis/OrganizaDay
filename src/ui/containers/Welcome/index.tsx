@@ -1,7 +1,7 @@
 import { scaleSize } from "@/src/utils/responsive";
 import styled from "@/src/utils/styled";
 import { useRouter } from "expo-router";
-import { StatusBar, View } from "react-native";
+import { View } from "react-native";
 import { alternativeColor, neutralColor, primaryDarkColor, primaryMediumColor } from "../../colors";
 import {
   Button,
