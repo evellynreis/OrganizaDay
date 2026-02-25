@@ -20,14 +20,6 @@ export const HeaderBackground = styled(View, {
 export function WelcomeContainer() {
   const router = useRouter();
 
-  const handleRegister = () => {
-    console.log("Tela de Registro");
-  };
-
-  const handleLogin = () => {
-    router.push("/no-auth/login");
-  };
-
   return (
     <Container backgroundColor={primaryDarkColor}>
       <HeaderBackground>
@@ -46,8 +38,8 @@ export function WelcomeContainer() {
       </Column>
       <Column fill mainGap={32}>
         <Column mainGap={12}>
-          <Button title="Criar conta" onPress={handleRegister} fill />
-          <Button title="Já tenho conta" onPress={handleLogin} fill />
+          <Button title="Criar conta" onPress={() => console.log("Criar conta")} fill />
+          <Button title="Já tenho conta" onPress={() => router.push("/no-auth/login")} fill />
         </Column>
       </Column>
 

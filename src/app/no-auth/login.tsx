@@ -1,5 +1,5 @@
 import { LoginContainer } from "@/src/ui/containers/Login";
 
-export function Login() {
+export default function Login() {
     return <LoginContainer />;
 }
