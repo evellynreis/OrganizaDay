@@ -13,19 +13,22 @@ export const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     flexDirection: "row",
+  },
+
+  background: {
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.4)",
   },
 
   menu: {
-    width: scaleSize(260),
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 260,
     backgroundColor: "#fff",
     padding: scaleSize(20),
-    height: "100%",
     elevation: 20,
-  },
-
-  background: {
-    flex: 1,
   },
 
   closeButton: {
