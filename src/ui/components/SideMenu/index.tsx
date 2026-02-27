@@ -1,58 +1,25 @@
-import React, { useRef, useState } from "react";
-import {
-  Alert,
-  Animated,
-  Dimensions,
-  Modal,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { styles } from "./styles";
-import { primaryColor } from "../../colors";
+// SideMenu/index.tsx
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const MENU_WIDTH = 260;
+import { Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React from "react";
+import { Alert, Animated, Modal, Pressable, Text, View } from "react-native";
+import { primaryColor } from "../../colors";
+import { Space } from "../core";
+import { styles } from "./styles";
+import { MenuItem } from "./types";
+import { useSideMenu } from "./useSideMenu";
 
 export default function SideMenu() {
-  const [visible, setVisible] = useState(false);
+  const router = useRouter();
+  const { visible, slideAnim, fadeAnim, openMenu, closeMenu } = useSideMenu();
 
-  const slideAnim = useRef(new Animated.Value(-MENU_WIDTH)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  function openMenu() {
-    setVisible(true);
-
-    Animated.parallel([
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start();
+  function handleOutlay() {
+    closeMenu(() => console.log("Navegar para gastos"));
   }
 
-  function closeMenu() {
-    Animated.parallel([
-      Animated.timing(slideAnim, {
-        toValue: -MENU_WIDTH,
-        duration: 250,
-        useNativeDriver: true,
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      setVisible(false);
-    });
+  function handleSchedule() {
+    closeMenu(() => console.log("Navegar para compromissos"));
   }
 
   function handleLogout() {
@@ -61,13 +28,42 @@ export default function SideMenu() {
       {
         text: "Sair",
         style: "destructive",
-        onPress: () => {
-          closeMenu();
-          console.log("Logout realizado");
-        },
+        onPress: () => 
+          closeMenu(() => router.replace("/welcome"))
+        ,
       },
     ]);
   }
+
+  function MenuOption({ label, icon, onPress, danger }: MenuItem) {
+    return (
+      <Pressable style={styles.menuItem} onPress={onPress}>
+        <Feather name={icon} size={20} color={danger ? "#E53935" : "#333"} />
+        <Text style={[styles.menuText, danger && { color: "#E53935" }]}>
+          {label}
+        </Text>
+      </Pressable>
+    );
+  }
+
+  const MENU_ITEMS: MenuItem[] = [
+    {
+      label: "Compromissos",
+      icon: "calendar",
+      onPress: handleSchedule,
+    },
+    {
+      label: "Gastos",
+      icon: "credit-card",
+      onPress: handleOutlay,
+    },
+    {
+      label: "Logout",
+      icon: "log-out",
+      onPress: handleLogout,
+      danger: true,
+    },
+  ];
 
   return (
     <>
@@ -78,25 +74,24 @@ export default function SideMenu() {
       <Modal visible={visible} transparent animationType="none">
         <View style={styles.overlay}>
           <Animated.View style={[styles.background, { opacity: fadeAnim }]}>
-            <Pressable style={{ flex: 1 }} onPress={closeMenu} />
+            <Pressable style={{ flex: 1 }} onPress={() => closeMenu()} />
           </Animated.View>
 
           <Animated.View
-            style={[
-              styles.menu,
-              {
-                transform: [{ translateX: slideAnim }],
-              },
-            ]}
+            style={[styles.menu, { transform: [{ translateX: slideAnim }] }]}
           >
-            <Pressable style={styles.closeButton} onPress={closeMenu}>
+            <Pressable style={styles.closeButton} onPress={() => closeMenu()}>
               <Feather name="x" size={24} color="#333" />
             </Pressable>
 
-            <Pressable style={styles.menuItem} onPress={handleLogout}>
-              <Feather name="log-out" size={20} color="#333" />
-              <Text style={styles.menuText}>Logout</Text>
-            </Pressable>
+            <Space size={24} />
+
+            {MENU_ITEMS.map((item, index) => (
+              <View key={item.label}>
+                <MenuOption {...item} />
+                {index < MENU_ITEMS.length - 1 && <Space size={16} />}
+              </View>
+            ))}
           </Animated.View>
         </View>
       </Modal>

@@ -4,7 +4,7 @@ import { Row, RegularText } from "../../components";
 
 import { styles } from "./styles";
 import { ScheduleItemProps } from "./types";
-import { mutedAccentColor, blackColor, successColor } from "../../colors";
+import { mutedAccentColor, blackColor, successColor, alternativeColor, neutralColor } from "../../colors";
 
 export default function ScheduleItem({
   title,
@@ -16,7 +16,7 @@ export default function ScheduleItem({
       case "success":
         return successColor;
       default:
-        return blackColor;
+        return alternativeColor;
     }
   };
 
@@ -33,10 +33,10 @@ export default function ScheduleItem({
             { backgroundColor: getDotColor() },
           ]}
         />
-        <RegularText>{title}</RegularText>
+        <RegularText color={alternativeColor}>{title}</RegularText>
       </Row>
 
-      <RegularText>{time}</RegularText>
+      <RegularText color={neutralColor}>{time}</RegularText>
     </Row>
   );
 }

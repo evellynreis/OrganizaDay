@@ -11,9 +11,9 @@ export const mutedLightColor = withOpacity(blackColor, 0.2);
 
 export const primaryColor = "#2B43A0";
 export const primaryLightColor = "#1B221F";
-export const primaryMediumColor = "#7C92C9";
 export const primaryDarkColor = "#0F1613";
 
+export const secundaryDarkColor = "#1A2233";
 export const secondaryColor = "#436573";
 export const secondaryLightColor = withOpacity(secondaryColor, 0.2);
 

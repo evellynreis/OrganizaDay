@@ -71,7 +71,7 @@ export function LoginContainer() {
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // router.replace("/home");
+      router.replace("/home");
 
     } catch (error) {
       setGeneralError("Erro ao realizar login.");

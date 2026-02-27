@@ -1,13 +1,20 @@
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { neutralColor, primaryColor, primaryDarkColor } from "../../colors";
+import {
+  alternativeColor,
+  neutralColor,
+  primaryColor,
+  primaryDarkColor,
+  secundaryDarkColor,
+} from "../../colors";
 import {
   Button,
   Column,
   ContainerScrollable,
   RegularText,
-  Row,
+  SubtitleText,
+  TitleText,
 } from "../../components";
 
 import Card from "../../components/Card";
@@ -25,12 +32,12 @@ export default function HomeContainer() {
         <ContainerScrollable
           backgroundColor={primaryDarkColor}
           style={{
-            paddingHorizontal: scaleSize(16),
-            paddingTop: scaleSize(60),
-            paddingBottom: scaleSize(24),
+            paddingHorizontal: scaleSize(20),
+            paddingTop: scaleSize(70),
+            paddingBottom: scaleSize(32),
           }}
           renderFooter={() => (
-            <Column mainGap={12} style={{ marginTop: scaleSize(16) }}>
+            <Column mainGap={14} style={{ marginTop: scaleSize(24) }}>
               <Button
                 title="Adicionar Gastos"
                 onPress={() => console.log("Adicionar gastos")}
@@ -44,47 +51,44 @@ export default function HomeContainer() {
             </Column>
           )}
         >
-          <Column mainGap={12}>
-            <Card padding={16}>
+          <Column mainGap={14}>
+            <Card padding={18} backgroundColor={secundaryDarkColor}>
               <Column mainGap={6}>
-                <RegularText>Saldo do Mês</RegularText>
-                <RegularText color={primaryColor}>
-                  R$ 1950,00
-                </RegularText>
-              </Column>
-            </Card>
-
-            <Card padding={16}>
-              <Column mainGap={6}>
-                <RegularText>Previstos</RegularText>
-                <RegularText color={primaryColor}>
-                  R$ 950,00
-                </RegularText>
+                <SubtitleText color={alternativeColor}>
+                  Saldo do Mês
+                </SubtitleText>
+                <TitleText color={primaryColor}>R$ 1950,00</TitleText>
               </Column>
             </Card>
           </Column>
 
-          <Column mainGap={12} style={{ marginTop: scaleSize(12) }}>
-            <Card padding={16}>
+          <Column mainGap={14} style={{ marginTop: scaleSize(18) }}>
+            <Card padding={18} backgroundColor={secundaryDarkColor}>
               <Column mainGap={6}>
-                <RegularText>Total Gasto</RegularText>
-                <RegularText color={primaryColor}>
-                  R$ 950,00
-                </RegularText>
+                <SubtitleText color={alternativeColor}>Previstos</SubtitleText>
+                <TitleText color={primaryColor}>R$ 950,00</TitleText>
+              </Column>
+            </Card>
+          </Column>
+
+          <Column mainGap={14} style={{ marginTop: scaleSize(18) }}>
+            <Card padding={18} backgroundColor={secundaryDarkColor}>
+              <Column mainGap={6}>
+                <SubtitleText color={alternativeColor}>
+                  Total Gasto
+                </SubtitleText>
+                <TitleText color={primaryColor}>R$ 950,00</TitleText>
               </Column>
             </Card>
 
-            <Card padding={16}>
-              <Column mainGap={16}>
-                <Row>
-                  <Column>
-                    <RegularText>Próximos</RegularText>
-                    <RegularText>compromissos</RegularText>
-                    <RegularText color={neutralColor}>
-                      12 Out
-                    </RegularText>
-                  </Column>
-                </Row>
+            <Card padding={18} backgroundColor={secundaryDarkColor}>
+              <Column mainGap={18}>
+                <Column>
+                  <SubtitleText color={alternativeColor}>
+                    Próximos compromissos
+                  </SubtitleText>
+                  <RegularText color={neutralColor}>12 Out</RegularText>
+                </Column>
 
                 <Column mainGap={14}>
                   <ScheduleItem
