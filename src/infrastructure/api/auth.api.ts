@@ -1,0 +1,11 @@
+import { apiFetch } from "./apiClient";
+
+export async function login(email: string, password: string) {
+  return apiFetch("/auth/login", {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  });
+}

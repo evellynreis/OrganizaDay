@@ -25,6 +25,7 @@ import {
 } from "../../components";
 
 import LoginFormFields from "./content/FormFields";
+import { login } from "@/src/infrastructure/api/auth.api";
 
 export const HeaderBackground = styled(View, {
   marginHorizontal: scaleSize(-24),
@@ -69,12 +70,12 @@ export function LoginContainer() {
     try {
       setIsPending(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await login(values.email, values.password);
 
       router.replace("/home");
 
-    } catch (error) {
-      setGeneralError("Erro ao realizar login.");
+    } catch (error: any) {
+      setGeneralError(error.message || "Erro ao realizar login.");
     } finally {
       setIsPending(false);
     }

@@ -1,10 +1,8 @@
-// SideMenu/index.tsx
-
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Alert, Animated, Modal, Pressable, Text, View } from "react-native";
-import { primaryColor } from "../../colors";
+import { errorColor, neutralColor, primaryColor } from "../../colors";
 import { Space } from "../core";
 import { styles } from "./styles";
 import { MenuItem } from "./types";
@@ -38,8 +36,8 @@ export default function SideMenu() {
   function MenuOption({ label, icon, onPress, danger }: MenuItem) {
     return (
       <Pressable style={styles.menuItem} onPress={onPress}>
-        <Feather name={icon} size={20} color={danger ? "#E53935" : "#333"} />
-        <Text style={[styles.menuText, danger && { color: "#E53935" }]}>
+        <Feather name={icon} size={20} color={danger ? errorColor : neutralColor} />
+        <Text style={[styles.menuText, danger && { color: errorColor }]}>
           {label}
         </Text>
       </Pressable>
@@ -81,7 +79,7 @@ export default function SideMenu() {
             style={[styles.menu, { transform: [{ translateX: slideAnim }] }]}
           >
             <Pressable style={styles.closeButton} onPress={() => closeMenu()}>
-              <Feather name="x" size={24} color="#333" />
+              <Feather name="x" size={24} color={neutralColor} />
             </Pressable>
 
             <Space size={24} />
