@@ -12,18 +12,20 @@ function registerUser(req, res) {
     });
   }
 
-  const existingUser = users.find((u) => u.email === email);
+  const existingUser = users.find(
+    (u) => u.email === email || u.cpf === cpf
+  );
 
   if (existingUser) {
-    return res.status(400).json({
-      message: "E-mail já cadastrado.",
+    return res.status(409).json({
+      message: "E-mail ou CPF já cadastrado.",
     });
   }
 
   const newUser = {
     id: users.length + 1,
-    nome,
-    dateBirthday,
+    name,
+    cpf,
     email,
     password,
   };

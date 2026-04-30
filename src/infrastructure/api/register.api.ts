@@ -1,13 +1,15 @@
 import { apiFetch } from "./apiClient";
 
-export async function register(nome: string, dateBirthday: string, email: string, password: string) {
+type RegisterPayload = {
+  name: string;
+  cpf: string;
+  email: string;
+  password: string;
+};
+
+export async function register(data: RegisterPayload) {
   return apiFetch("/register/user", {
     method: "POST",
-    body: JSON.stringify({
-      nome,
-      dateBirthday,
-      email,
-      password
-    }),
+    body: JSON.stringify(data),
   });
 }
