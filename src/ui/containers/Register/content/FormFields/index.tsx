@@ -1,7 +1,21 @@
-import { primaryDarkColor } from "@/src/ui/colors";
-import { Button, ContainerScrollable, Input } from "@/src/ui/components";
+import {
+  alternativeColor,
+  neutralColor,
+  primaryDarkColor,
+} from "@/src/ui/colors";
+import {
+  Button,
+  Column,
+  ContainerScrollable,
+  DisplayText,
+  Gutter,
+  Input,
+  RegularText,
+  Space,
+} from "@/src/ui/components";
 import { useRouter } from "expo-router";
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRegister } from "../../hooks/useRegister";
 import { useRegisterForm } from "../../hooks/useRegisterForm";
 import { FormStep, RegisterFormData } from "../../types";
@@ -133,33 +147,48 @@ export default function RegisterFormFields() {
   };
 
   return (
-    <ContainerScrollable
-      backgroundColor={primaryDarkColor}
-      withVerticalPadding="bottom"
-      renderFooter={() => (
-        <Button
-          title={
-            currentStepIndex === registerSteps.length - 1
-              ? "Finalizar"
-              : "Continuar"
-          }
-          onPress={handleSubmit}
-          loading={isPending}
-          fill
-        />
-      )}
-    >
-      {currentStep.fields.map((field) => (
-        <Input
-          key={field.name}
-          placeholder={field.placeholder}
-          value={values[field.name] || ""}
-          keyboardType={field.keyboardType}
-          secureTextEntry={field.secureTextEntry}
-          maxLength={field.maxLength}
-          onChangeText={(text) => handleChange(field.name, text)}
-        />
-      ))}
-    </ContainerScrollable>
+    <SafeAreaView style={{ flex: 1, backgroundColor: primaryDarkColor }}>
+      <View style={{ flex: 1 }}>
+        <ContainerScrollable
+          backgroundColor={primaryDarkColor}
+          withVerticalPadding="bottom"
+          renderFooter={() => (
+            <Button
+              title={
+                currentStepIndex === registerSteps.length - 1
+                  ? "Finalizar"
+                  : "Continuar"
+              }
+              onPress={handleSubmit}
+              loading={isPending}
+              fill
+            />
+          )}
+        >
+          <DisplayText color={alternativeColor}>
+            {currentStep.title}
+          </DisplayText>
+          <RegularText color={neutralColor}>{currentStep.subtitle}</RegularText>
+          <Space size={8} />
+          <Column mainGap={16}>
+            <Gutter verticalSpace={8}>
+              {currentStep.fields.map((field) => (
+                <View key={field.name}>
+                  <RegularText color={neutralColor}>{field.label}</RegularText>
+                  <Input
+                    placeholder={field.placeholder}
+                    value={values[field.name] || ""}
+                    keyboardType={field.keyboardType}
+                    secureTextEntry={field.secureTextEntry}
+                    maxLength={field.maxLength}
+                    onChangeText={(text) => handleChange(field.name, text)}
+                  />
+                </View>
+              ))}
+            </Gutter>
+          </Column>
+        </ContainerScrollable>
+      </View>
+    </SafeAreaView>
   );
 }
