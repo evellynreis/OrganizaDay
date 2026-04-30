@@ -126,35 +126,67 @@ export const Container = ({ children, ...rest }: PropsWithChildren<IContainerPro
   );
 };
 
-export const ContainerScrollable = ({ children, scroll, ...rest }: PropsWithChildren<IScrollableContainerProps>) => {
+export const ContainerScrollable = ({
+  children,
+  scroll,
+  ...rest
+}: PropsWithChildren<IScrollableContainerProps>) => {
   const insets = useSafeAreaInsets();
-  const { backgroundColor, withHorizontalPadding = true, withVerticalPadding = false, renderFooter, ...safeAreaProps } = rest;
+
+  const {
+    backgroundColor,
+    withHorizontalPadding = true,
+    withVerticalPadding = false,
+    renderFooter,
+    ...safeAreaProps
+  } = rest;
+
   return (
     <Container
       withHorizontalPadding={false}
       withVerticalPadding={false}
       backgroundColor={backgroundColor}
-      {...safeAreaProps as any}>
+      {...(safeAreaProps as any)}
+    >
       <ScrollView
-        style={{
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+
           paddingHorizontal: withHorizontalPadding ? scaleSize(24) : 0,
-          paddingTop: (withVerticalPadding == "top" || withVerticalPadding == true) ? scaleSize(24) : 0,
-          paddingBottom: (withVerticalPadding == "bottom" || withVerticalPadding == true) && !renderFooter ? scaleSize(24) : 0
+
+          paddingTop:
+            withVerticalPadding === "top" || withVerticalPadding === true
+              ? scaleSize(24)
+              : 0,
+
+          paddingBottom:
+            (withVerticalPadding === "bottom" ||
+              withVerticalPadding === true) && !renderFooter
+              ? scaleSize(24)
+              : 0,
         }}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         {...scroll}
       >
         {children}
       </ScrollView>
-      {renderFooter && <View style={{
-        paddingHorizontal: withHorizontalPadding ? scaleSize(24) : 0,
-        paddingBottom: insets.bottom
-      }} >{renderFooter()}</View>}
 
+      {renderFooter && (
+        <View
+          style={{
+            paddingHorizontal: withHorizontalPadding ? scaleSize(24) : 0,
+            paddingBottom: insets.bottom,
+            backgroundColor: backgroundColor,
+          }}
+        >
+          {renderFooter()}
+        </View>
+      )}
     </Container>
   );
 };
-
 export const Section = styled<ViewProps, ViewProps>(View, {
   marginBottom: scaleSize(24),
   width: "100%",

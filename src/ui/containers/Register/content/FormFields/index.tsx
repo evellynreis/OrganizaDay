@@ -3,6 +3,7 @@ import {
   neutralColor,
   primaryDarkColor,
 } from "@/src/ui/colors";
+
 import {
   Button,
   Column,
@@ -11,11 +12,11 @@ import {
   Gutter,
   Input,
   RegularText,
-  Space,
 } from "@/src/ui/components";
+
 import { useRouter } from "expo-router";
 import { Alert, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 import { useRegister } from "../../hooks/useRegister";
 import { useRegisterForm } from "../../hooks/useRegisterForm";
 import { FormStep, RegisterFormData } from "../../types";
@@ -46,7 +47,6 @@ const registerSteps: FormStep<RegisterFormData>[] = [
         name: "name",
         label: "Nome",
         placeholder: "Digite aqui...",
-        keyboardType: "default",
       },
     ],
   },
@@ -104,24 +104,20 @@ export default function RegisterFormFields() {
   const currentStep = registerSteps[currentStepIndex];
 
   const handleSubmit = () => {
-    if (!validateCurrentStep(currentStep.id)) {
-      return;
-    }
-
-    if (currentStep.onSubmit) {
-      currentStep.onSubmit(values);
-    }
+    if (!validateCurrentStep(currentStep.id)) return;
 
     if (currentStepIndex < registerSteps.length - 1) {
       goToNextStep();
     } else {
       const payload = prepareRegisterPayload();
+
       register(payload, {
         onSuccess: () => {
           router.replace("/(tabs)/home");
         },
         onError: (error: any) => {
           console.error("Erro ao fazer cadastro:", error);
+
           if (
             error?.response?.status === 400 ||
             error?.response?.status === 409
@@ -130,7 +126,7 @@ export default function RegisterFormFields() {
           } else {
             Alert.alert(
               "Erro",
-              "Estamos com problemas. Tente novamente mais tarde.",
+              "Estamos com problemas. Tente novamente mais tarde."
             );
           }
         },
@@ -138,57 +134,59 @@ export default function RegisterFormFields() {
     }
   };
 
-  const handleBack = () => {
-    if (currentStepIndex > 0) {
-      goToPreviousStep();
-    } else {
-      router.back();
-    }
-  };
-
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: primaryDarkColor }}>
-      <View style={{ flex: 1 }}>
-        <ContainerScrollable
-          backgroundColor={primaryDarkColor}
-          withVerticalPadding="bottom"
-          renderFooter={() => (
-            <Button
-              title={
-                currentStepIndex === registerSteps.length - 1
-                  ? "Finalizar"
-                  : "Continuar"
-              }
-              onPress={handleSubmit}
-              loading={isPending}
-              fill
+    <ContainerScrollable
+      backgroundColor={primaryDarkColor}
+      withVerticalPadding="bottom"
+      renderFooter={() => (
+        <Button
+          title={
+            currentStepIndex === registerSteps.length - 1
+              ? "Finalizar"
+              : "Continuar"
+          }
+          onPress={handleSubmit}
+          loading={isPending}
+          fill
+        />
+      )}
+    >
+      {/* HEADER */}
+      <Column mainGap={12}>
+        <DisplayText color={alternativeColor}>
+          {currentStep.title}
+        </DisplayText>
+
+        <RegularText color={neutralColor}>
+          {currentStep.subtitle}
+        </RegularText>
+      </Column>
+
+      {/* CAMPOS */}
+      <Column fill mainGap={24}>
+        {currentStep.fields.map((field) => (
+          <Gutter key={field.name} verticalSpace={8}>
+            <RegularText color={neutralColor}>
+              {field.label}
+            </RegularText>
+
+            <Input
+              value={values[field.name] || ""}
+              onChangeText={(text) => handleChange(field.name, text)}
+              placeholder={field.placeholder}
+              keyboardType={field.keyboardType}
+              secureTextEntry={field.secureTextEntry}
+              maxLength={field.maxLength}
             />
-          )}
-        >
-          <DisplayText color={alternativeColor}>
-            {currentStep.title}
-          </DisplayText>
-          <RegularText color={neutralColor}>{currentStep.subtitle}</RegularText>
-          <Space size={8} />
-          <Column mainGap={16}>
-            <Gutter verticalSpace={8}>
-              {currentStep.fields.map((field) => (
-                <View key={field.name}>
-                  <RegularText color={neutralColor}>{field.label}</RegularText>
-                  <Input
-                    placeholder={field.placeholder}
-                    value={values[field.name] || ""}
-                    keyboardType={field.keyboardType}
-                    secureTextEntry={field.secureTextEntry}
-                    maxLength={field.maxLength}
-                    onChangeText={(text) => handleChange(field.name, text)}
-                  />
-                </View>
-              ))}
-            </Gutter>
-          </Column>
-        </ContainerScrollable>
-      </View>
-    </SafeAreaView>
+
+            {errors[field.name] && (
+              <RegularText color={"red"}>
+                {errors[field.name]}
+              </RegularText>
+            )}
+          </Gutter>
+        ))}
+      </Column>
+    </ContainerScrollable>
   );
 }
